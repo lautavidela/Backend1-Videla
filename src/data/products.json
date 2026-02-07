@@ -1,1 +1,13 @@
-[]
+[
+	{
+		"id": 1,
+		"title": "Celular Samsung",
+		"description": "Gama media alta",
+		"code": "SAM123",
+		"price": 800,
+		"status": true,
+		"stock": 10,
+		"category": "Celulares",
+		"thumbnails": []
+	}
+]
