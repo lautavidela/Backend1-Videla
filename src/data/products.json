@@ -9,5 +9,16 @@
 		"stock": 10,
 		"category": "Celulares",
 		"thumbnails": []
+	},
+	{
+		"id": 2,
+		"title": "Mouse",
+		"description": "Mouse Gamer ",
+		"code": "MS530",
+		"price": 39999,
+		"status": true,
+		"stock": 5,
+		"category": "Perifericos",
+		"thumbnails": []
 	}
 ]
