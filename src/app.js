@@ -1,10 +1,11 @@
 import express from 'express';
 import { engine } from 'express-handlebars';
 import { Server } from 'socket.io';
+import mongoose from 'mongoose';
 import productsRouter from './routes/products.router.js';
 import cartsRouter from './routes/carts.router.js';
 import viewsRouter from './routes/views.router.js';
-import ProductManager from './managers/ProductManager.js'; 
+import { productModel } from './models/product.model.js';
 
 const app = express();
 const PORT = 8080;
@@ -18,6 +19,11 @@ app.use(express.static('./src/public'));
 app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');
 app.set('views', './src/views');
+
+
+mongoose.connect('mongodb+srv://lautavidela:BRVHpLzRNp9N5clS@socialwall.6srpfzt.mongodb.net/coder_ecommerce?appName=CoderBackend')
+    .then(() => console.log('¡Conectado a la base de datos MongoDB!'))
+    .catch(error => console.error('Error al conectar a MongoDB:', error));
 
 // Levantamos el servidor HTTP
 const httpServer = app.listen(PORT, () => {
@@ -38,12 +44,13 @@ app.use('/api/carts', cartsRouter);
 app.use('/', viewsRouter);
 
 // Lógica de Sockets al conectar un cliente
-const productManager = new ProductManager('./src/data/products.json');
-
 io.on('connection', async (socket) => {
     console.log('¡Nuevo cliente conectado!');
     
-    // Al conectarse, le enviamos todos los productos actuales
-    const products = await productManager.getProducts();
-    socket.emit('updateProducts', products);
+    try {
+        const products = await productModel.find().lean();
+        socket.emit('updateProducts', products);
+    } catch (error) {
+        console.error('Error al obtener productos para WebSockets:', error);
+    }
 });

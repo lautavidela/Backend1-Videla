@@ -1,8 +1,45 @@
-<h1>Lista de Productos (Estática)</h1>
+<h1>Lista de Productos</h1>
+
 <ul>
     {{#each products}}
-        <li>
-            <strong>{{this.title}}</strong> - ${{this.price}} (Código: {{this.code}})
+        <li style="margin-bottom: 15px;">
+            <strong>{{this.title}}</strong> - ${{this.price}} <br>
+            <small>Categoría: {{this.category}} | Stock: {{this.stock}}</small><br>
+            <button onclick="agregarAlCarrito('{{this._id}}')">Agregar al Carrito</button>
         </li>
     {{/each}}
 </ul>
+
+<hr>
+
+<div>
+    {{#if hasPrevPage}}
+        <a href="/?page={{prevPage}}"><button>Anterior</button></a>
+    {{/if}}
+
+    <span style="margin: 0 10px;">Página {{page}}</span>
+
+    {{#if hasNextPage}}
+        <a href="/?page={{nextPage}}"><button>Siguiente</button></a>
+    {{/if}}
+</div>
+
+<script>
+    const CART_ID = "69bead82dc6e5cd5ccf38924"; 
+
+    async function agregarAlCarrito(productId) {
+        try {
+            const response = await fetch(`/api/carts/${CART_ID}/product/${productId}`, {
+                method: 'POST'
+            });
+
+            if (response.ok) {
+                alert('¡Producto agregado al carrito con éxito!');
+            } else {
+                alert('Error al agregar el producto');
+            }
+        } catch (error) {
+            console.error('Hubo un error en la petición:', error);
+        }
+    }
+</script>
