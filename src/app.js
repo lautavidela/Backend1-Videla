@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import express from 'express';
 import { engine } from 'express-handlebars';
 import { Server } from 'socket.io';
@@ -21,9 +22,9 @@ app.set('view engine', 'handlebars');
 app.set('views', './src/views');
 
 
-mongoose.connect('mongodb+srv://lautavidela:BRVHpLzRNp9N5clS@socialwall.6srpfzt.mongodb.net/coder_ecommerce?appName=CoderBackend')
-    .then(() => console.log('¡Conectado a la base de datos MongoDB!'))
-    .catch(error => console.error('Error al conectar a MongoDB:', error));
+mongoose.connect(process.env.MONGO_URL)
+    .then(() => console.log('¡Conectado a MongoDB Atlas!'))
+    .catch(error => console.error('Error al conectar:', error));
 
 // Levantamos el servidor HTTP
 const httpServer = app.listen(PORT, () => {
